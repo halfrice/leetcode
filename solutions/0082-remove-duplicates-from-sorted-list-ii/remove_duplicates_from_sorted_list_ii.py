@@ -47,5 +47,4 @@ class Utils:
             nums.append(cur.val)
             cur = cur.next
 
-        print(nums)
         return nums
