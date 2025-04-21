@@ -78,5 +78,4 @@ class Utils:
         if queue:
             self.tree_to_list(queue.popleft(), queue, depth + 1)
 
-        print(self.nums)
         return self.nums

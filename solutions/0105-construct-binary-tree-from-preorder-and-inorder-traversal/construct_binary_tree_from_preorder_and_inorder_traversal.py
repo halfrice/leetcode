@@ -13,16 +13,39 @@ class TreeNode:
 
 class Solution:
     def buildTree(self, preorder: list[int], inorder: list[int]) -> TreeNode | None:
-        if not preorder or not inorder:
-            return None
+        value_to_index = {v: i for i, v in enumerate(inorder)}
 
-        root = TreeNode(preorder[0])
-        mid = inorder.index(preorder[0])
+        def helper(preorder_index, inorder_index, size):
+            if size <= 0:
+                return None
 
-        root.left = self.buildTree(preorder[1 : mid + 1], inorder[:mid])
-        root.right = self.buildTree(preorder[mid + 1 :], inorder[mid + 1 :])
+            root_value = preorder[preorder_index]
+            inorder_root_index = value_to_index[root_value]
 
-        return root
+            left = helper(
+                preorder_index + 1, inorder_index, inorder_root_index - inorder_index
+            )
+            right = helper(
+                preorder_index + 1 + inorder_root_index - inorder_index,
+                inorder_root_index + 1,
+                size - inorder_root_index + inorder_index - 1,
+            )
+
+            return TreeNode(root_value, left, right)
+
+        return helper(0, 0, len(preorder))
+
+    # def buildTree(self, preorder: list[int], inorder: list[int]) -> TreeNode | None:
+    #     if not preorder or not inorder:
+    #         return None
+    #
+    #     root = TreeNode(preorder[0])
+    #     mid = inorder.index(preorder[0])
+    #
+    #     root.left = self.buildTree(preorder[1 : mid + 1], inorder[:mid])
+    #     root.right = self.buildTree(preorder[mid + 1 :], inorder[mid + 1 :])
+    #
+    #     return root
 
 
 # Utility functions
@@ -73,5 +96,4 @@ class Utils:
         if queue:
             self.tree_to_list(queue.popleft(), queue, depth + 1)
 
-        print(self.nums)
         return self.nums
