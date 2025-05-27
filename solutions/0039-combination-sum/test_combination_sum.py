@@ -1,5 +1,4 @@
 from combination_sum import Solution
-from collections import Counter
 
 solution = Solution()
 
